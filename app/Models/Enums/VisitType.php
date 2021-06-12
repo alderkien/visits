@@ -10,8 +10,8 @@ class VisitType
     public static function values(): array
     {
         return [
-            self::IN  => trans('commmon.in'),
-            self::OUT => trans('commmon.out'),
+            self::IN  => trans('common.in'),
+            self::OUT => trans('common.out'),
         ];
     }
 

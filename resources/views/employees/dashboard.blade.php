@@ -1,14 +1,13 @@
 @extends('layouts.site')
 
 @section('content')
-<a href="{{ route('employees.create') }}" class="btn btn-success mb-2">Добавить сотрудника</a>
-
+<h4>Учёт посещений сотрудников</h4>
 <table class="table">
     <tr>
         <th>ФИО</th>
         <th>Телефон</th>
         <th>Табельный номер</th>
-        <th class="text-center">Действия</th>
+        <th>Посещение</th>
     </tr>
 
     @forelse($employees as $employee)
@@ -20,11 +19,13 @@
         </td>
         <td>{{ $employee->phone }}</td>
         <td>{{ $employee->number ?? '-' }}</td>
-        <td class="text-center">
-            <a href="{{ route('employees.edit', $employee->id) }}" class="btn btn-primary btn-sm my-1">Редактировать</a>
-            {{ Form::open(['method' => 'DELETE', 'url' => route('employees.destroy', $employee->id)]) }}
-            <button type="submit" class="btn btn-danger btn-sm my-1">Удалить</button>
-            {{ Form::close() }}
+        <td>
+            @if(!empty($employee->lastVisit ))
+            {{ $employee->lastVisit->date->format('d.m.Y H:i') }}
+            <span class="{{ $employee->lastVisit->type_color }}">{{ $employee->lastVisit->translated_type }}</span>
+            @else
+            нет данных
+            @endif
         </td>
     </tr>
     @empty

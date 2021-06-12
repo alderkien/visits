@@ -10,6 +10,21 @@ use App\Models\Employee;
 
 class EmployeesController extends Controller
 {
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function dashboard()
+    {
+        $employees = Employee::with(['lastVisit'])->get();
+        return view('employees.dashboard', [
+            'employees' => $employees,
+        ]);
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -58,7 +73,11 @@ class EmployeesController extends Controller
      */
     public function show(Employee $employee)
     {
-        //
+        $employee->load('visits');
+
+        return view('employees.show', [
+            'entity' => $employee,
+        ]);
     }
 
     /**

@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Enums\VisitType;
 
-class EmployeeVisit extends Pivot
+class EmployeeVisit extends Model
 {
 
     /**
@@ -12,7 +13,7 @@ class EmployeeVisit extends Pivot
      */
     protected $table = 'employee_visits';
 
-        /**
+    /**
      * @var array
      */
     protected $fillable = [
@@ -21,11 +22,25 @@ class EmployeeVisit extends Pivot
         'type',
     ];
 
+    protected $casts = [
+        'date' => 'datetime',
+    ];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function employee()
     {
         return $this->belongsTo('App\Models\Employee');
+    }
+
+    public function getTranslatedTypeAttribute()
+    {
+        return VisitType::values()[$this->type] ?? '';
+    }
+
+    public function getTypeColorAttribute()
+    {
+        return VisitType::colors()[$this->type] ?? '';
     }
 }
