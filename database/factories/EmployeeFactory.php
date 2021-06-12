@@ -22,7 +22,9 @@ class EmployeeFactory extends Factory
     public function definition()
     {
         return [
-
+            'name' => $this->faker->name,
+            'phone' => $this->faker->numerify('+7##########'),
+            'number' => $this->faker->numerify('########'),
         ];
     }
 }

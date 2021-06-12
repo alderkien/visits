@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\EmployeeVisit;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\EmployeeVisit;
+use App\Models\Enums\VisitType;
 
 class EmployeeVisitFactory extends Factory
 {
@@ -22,7 +23,8 @@ class EmployeeVisitFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'type' => $this->faker->randomElement(VisitType::keys()),
+            'date' => $this->faker->dateTimeBetween('-5 days', 'now')->format('Y-m-d'),
         ];
     }
 }

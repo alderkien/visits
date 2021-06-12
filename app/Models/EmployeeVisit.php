@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class EmployeeVisit extends Pivot
 {
+
+    /**
+     * @var string
+     */
+    protected $table = 'employee_visits';
+
         /**
      * @var array
      */
