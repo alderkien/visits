@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
 use Illuminate\Http\Request;
+use App\Http\Requests\CreateEmployee;
+use App\Http\Requests\UpdateEmployee;
+use App\Models\Employee;
+
 
 class EmployeesController extends Controller
 {
@@ -14,7 +17,10 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-        return view('employees.list');
+        $employees = Employee::orderBy('updated_at', 'DESC')->get();
+        return view('employees.list', [
+            'employees' => $employees,
+        ]);
     }
 
     /**
@@ -24,18 +30,24 @@ class EmployeesController extends Controller
      */
     public function create()
     {
-        //
+        return view('employees.form', [
+            'entity' => new Employee(),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\CreateEmployee  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateEmployee $request)
     {
-        //
+        $data = $request->validated();
+
+        Employee::create($data);
+
+        return redirect()->route('employees.index');
     }
 
     /**
@@ -57,7 +69,9 @@ class EmployeesController extends Controller
      */
     public function edit(Employee $employee)
     {
-        //
+        return view('employees.form', [
+            'entity' => $employee
+        ]);
     }
 
     /**
@@ -67,9 +81,13 @@ class EmployeesController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Employee $employee)
+    public function update(UpdateEmployee $request, Employee $employee)
     {
-        //
+        $data = $request->validated();
+
+        $employee->update($data);
+
+        return redirect()->route('employees.index');
     }
 
     /**
@@ -80,6 +98,8 @@ class EmployeesController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        //
+        $employee->delete();
+
+        return redirect()->route('employees.index');
     }
 }
