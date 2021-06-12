@@ -5,21 +5,11 @@ namespace App\Http\Controllers\Employee;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\EmployeeVisit;
-use Illuminate\Http\Request;
+use App\Models\Enums\VisitType;
+use App\Http\Requests\CreateVisit;
 
 class VisitsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Employee $employee)
-    {
-        //
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -28,56 +18,18 @@ class VisitsController extends Controller
      */
     public function create(Employee $employee)
     {
-        //
+        return view('employees.visits.form', [
+            'employee' => $employee,
+            'entity' => new EmployeeVisit(),
+            'types' => VisitType::values(),
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request, Employee $employee)
+    public function store(CreateVisit $request, Employee $employee)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Employee  $employee
-     * @param  \App\Models\EmployeeVisit  $EmployeeVisit
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Employee $employee, EmployeeVisit $EmployeeVisit)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Employee  $employee
-     * @param  \App\Models\EmployeeVisit  $EmployeeVisit
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Employee $employee, EmployeeVisit $EmployeeVisit)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Employee  $employee
-     * @param  \App\Models\EmployeeVisit  $EmployeeVisit
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Employee $employee, EmployeeVisit $EmployeeVisit)
-    {
-        //
+        $data = $request->validated();
+        $employee->visits()->create($data);
+        return redirect()->route('employees.show', $employee->id);
     }
 
     /**
@@ -87,8 +39,9 @@ class VisitsController extends Controller
      * @param  \App\Models\EmployeeVisit  $EmployeeVisit
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Employee $employee, EmployeeVisit $EmployeeVisit)
+    public function destroy(Employee $employee, EmployeeVisit $visit)
     {
-        //
+        $visit->delete();
+        return redirect()->route('employees.show', $employee->id);
     }
 }

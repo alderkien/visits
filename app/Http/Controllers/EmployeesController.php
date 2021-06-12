@@ -18,7 +18,9 @@ class EmployeesController extends Controller
      */
     public function dashboard()
     {
-        $employees = Employee::with(['lastVisit'])->get();
+        $employees = Employee::with(['lastVisit'])->get()->sortByDesc(function ($q) {
+            return $q->lastVisit->date;
+        });
         return view('employees.dashboard', [
             'employees' => $employees,
         ]);

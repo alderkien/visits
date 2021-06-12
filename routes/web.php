@@ -15,4 +15,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'EmployeesController@dashboard')->name('home');
 Route::resource('employees', 'EmployeesController');
-Route::resource('employees.visits', 'Employee\VisitsController');
+Route::resource('employees.visits', 'Employee\VisitsController', ['only' => ['create', 'store', 'destroy']]);

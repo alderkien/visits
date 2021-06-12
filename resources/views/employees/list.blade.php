@@ -20,11 +20,15 @@
         </td>
         <td>{{ $employee->phone }}</td>
         <td>{{ $employee->number ?? '-' }}</td>
-        <td class="text-center">
-            <a href="{{ route('employees.edit', $employee->id) }}" class="btn btn-primary btn-sm my-1">Редактировать</a>
-            {{ Form::open(['method' => 'DELETE', 'url' => route('employees.destroy', $employee->id)]) }}
-            <button type="submit" class="btn btn-danger btn-sm my-1">Удалить</button>
-            {{ Form::close() }}
+        <td class="text-center d-flex justify-content-around">
+            <div>
+                <a href="{{ route('employees.edit', $employee->id) }}" class="btn btn-primary btn-sm my-1">Редактировать</a>
+            </div>
+            <div>
+                {{ Form::open(['method' => 'DELETE', 'url' => route('employees.destroy', $employee->id)]) }}
+                <button type="submit" class="btn btn-danger btn-sm my-1">Удалить</button>
+                {{ Form::close() }}
+            </div>
         </td>
     </tr>
     @empty
